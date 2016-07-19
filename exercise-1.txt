@@ -1,0 +1,243 @@
+//ex1
+mysql> source data/import-table-structure.sql;
+
+
+mysql> show tables;
++----------------------------------------+
+| Tables_in_decodemtl_addressbook_import |
++----------------------------------------+
+| Account                                |
+| AddressBook                            |
+| Entry                                  |
++----------------------------------------+
+3 rows in set (0.00 sec)
+
+//ex2
+
+mysql insert into Account (email)values('pr@hotmail.com');
+mysql insert into AddressBook(name)values('pau');
+mysql insert into Entry (addressBookId,firstName,lastName)values('1350 clark','pau','rou');
+
+//ex3
+SELECT * FROM Account WHERE email = 'pr@hotmail.com';
+
+mysql> SELECT * FROM Account WHERE email = 'pr@hotmail.com';
++----+----------------+----------+---------------------+------------+
+| id | email          | password | createdOn           | modifiedOn |
++----+----------------+----------+---------------------+------------+
+|  1 | pr@hotmail.com |          | 0000-00-00 00:00:00 | NULL       |
++----+----------------+----------+---------------------+------------+
+1 row in set (0.00 sec)
+
+SELECT * FROM AddressBook WHERE name='pau';
+mysql> SELECT * FROM AddressBook WHERE name='pau';
++----+-----------+------+---------------------+------------+
+| id | accountId | name | createdOn           | modifiedOn |
++----+-----------+------+---------------------+------------+
+|  1 |         0 | pau  | 0000-00-00 00:00:00 | NULL       |
++----+-----------+------+---------------------+------------+
+1 row in set (0.00 sec)
+
+SELECT * FROM Entry WHERE addressBookId='1350 clark' AND firstName='pau' AND lastName = 'rou';
+
+mysql> SELECT * FROM Entry WHERE addressBookId='1350 clark' AND firstName='pau' AND lastName = 'rou';
++----+---------------+-----------+----------+----------+------+---------+----------------+----------------+------------------+-----------------+-----------------+
+| id | addressBookId | firstName | lastName | birthday | type | subtype | contentLineOne | contentLineTwo | contentLineThree | contentLineFour | contentLineFive |
++----+---------------+-----------+----------+----------+------+---------+----------------+----------------+------------------+-----------------+-----------------+
+|  1 |          1350 | pau       | rou      | NULL     | home | phone   |                | NULL           | NULL             | NULL            | NULL            |
++----+---------------+-----------+----------+----------+------+---------+----------------+----------------+------------------+-----------------+-----------------+
+1 row in set, 1 warning (0.00 sec)
+
+
+//ex4
+
+UPDATE Account SET email='clem@hotmail.com' WHERE id=1;
+
++----+------------------+----------+---------------------+------------+
+| id | email            | password | createdOn           | modifiedOn |
++----+------------------+----------+---------------------+------------+
+|  1 | clem@hotmail.com |          | 0000-00-00 00:00:00 | NULL       |
++----+------------------+----------+---------------------+------------+
+1 row in set (0.00 sec)
+
+UPDATE AddressBook SET name = 'pauclem' WHERE id=1;
++----+-----------+---------+---------------------+------------+
+| id | accountId | name    | createdOn           | modifiedOn |
++----+-----------+---------+---------------------+------------+
+|  1 |         0 | pauclem | 0000-00-00 00:00:00 | NULL       |
++----+-----------+---------+---------------------+------------+
+
+
+UPDATE Entry SET addressBookId='1332 StDominique',firstName='pau', lastName = 'clem' WHERE id=1;
+
++----+---------------+-----------+----------+----------+------+---------+----------------+----------------+------------------+-----------------+-----------------+
+| id | addressBookId | firstName | lastName | birthday | type | subtype | contentLineOne | contentLineTwo | contentLineThree | contentLineFour | contentLineFive |
++----+---------------+-----------+----------+----------+------+---------+----------------+----------------+------------------+-----------------+-----------------+
+|  1 |          1332 | pau       | clem     | NULL     | home | phone   |                | NULL           | NULL             | NULL            | NULL            |
++----+---------------+-----------+----------+----------+------+---------+----------------+----------------+------------------+-----------------+-----------------+
+
+//ex5
+
+truncate Entry;
+mysql> describe Entry;
++------------------+---------------------------------+------+-----+---------+----------------+
+| Field            | Type                            | Null | Key | Default | Extra          |
++------------------+---------------------------------+------+-----+---------+----------------+
+| id               | int(11)                         | NO   | PRI | NULL    | auto_increment |
+| addressBookId    | int(11)                         | NO   |     | NULL    |                |
+| firstName        | varchar(255)                    | NO   |     | NULL    |                |
+| lastName         | varchar(255)                    | YES  |     | NULL    |                |
+| birthday         | datetime                        | YES  |     | NULL    |                |
+| type             | enum('home','work','other')     | NO   |     | NULL    |                |
+| subtype          | enum('phone','address','email') | NO   |     | NULL    |                |
+| contentLineOne   | varchar(255)                    | NO   |     | NULL    |                |
+| contentLineTwo   | varchar(255)                    | YES  |     | NULL    |                |
+| contentLineThree | varchar(255)                    | YES  |     | NULL    |                |
+| contentLineFour  | varchar(255)                    | YES  |     | NULL    |                |
+| contentLineFive  | varchar(255)                    | YES  |     | NULL    |                |
++------------------+---------------------------------+------+-----+---------+----------------+
+
+//ex6
+
+mysql> drop table Account;
+
+//ex7
+
+source data/import-account.sql;
+source data/import-addressbook.sql;source datat/import-entry.sql;
+
+//ex8
+
+select email from Account where id='63';
+
+mysql> select email from Account where id='63';
++-------------------------------------------------+
+| email                                           |
++-------------------------------------------------+
+| consectetuer.rhoncus.Nullam@temporloremeget.org |
++-------------------------------------------------+
+
+What are the names of the AdressBooks belonging to accountId "3"
+
+select name from AddressBook where accountId = '3';
+
+mysql> select name from AddressBook where accountId = '3';
++---------------------------------+
+| name                            |
++---------------------------------+
+| Donec Incorporated              |
+| Ipsum Nunc LLC                  |
+| In Consectetuer Ltd             |
+| Lacus Aliquam Rutrum Industries |
+| Ac Ltd                          |
+| Mauris Consulting               |
+| Ornare Corporation              |
++---------------------------------+
+
+//On which date was the AddressBook titled "Lorem Foundation" created?
+
+select createdOn from AddressBook where name = 'Lorem Foundation';
+
++---------------------+
+| createdOn           |
++---------------------+
+| 2016-06-26 02:43:41 |
+| 2015-05-04 14:28:16 |
++---------------------+
+
+
+//ex9
+
+select count(*) from Account;
+
++----------+
+| count(*) |
++----------+
+|     1000 |
++----------+
+
+How many Address Books exist?
+
+
+
+How many Address Book Entries exist?
+
+select count(*) from AddressBook;
+
++----------+
+| count(*) |
++----------+
+|     1100 |
++----------+
+
+
+
+//ex 10 
+
+How many Address Book Entries are listed as born before February 12th of 1982?
+
+select count(*) from Entry where birthday <'1982-02-12';
+
++----------+
+| count(*) |
++----------+
+|     2687 |
++----------+
+
+
+How many Address Book Entries are listed as born on or after January 1st of 1965?
+
+select count(*) from Entry where birthday => '1965-01-01';
+
++----------+
+| count(*) |
++----------+
+|     2597 |
++----------+
+
+Which Address Book Entry is listed as being the oldest of age?
+
+mysql> select min(birthday) from Entry;
++---------------------+
+| min(birthday)       |
++---------------------+
+| 1945-09-02 09:21:58 |
++---------------------
+
+//ex11
+How many Address Book Entries are not listed as other?
+
+
+select count(*) from Entry where type != 'other';
+
+mysql> select count(*) from Entry where type != 'other';
++----------+
+| count(*) |
++----------+
+|     2800 |
++----------+
+
+
+How many Address Book Entries are listed as either home or work?
+
+select count(*) from Entry where type= 'home' or 'work';
+
++----------+
+| count(*) |
++----------+
+|     1600 |
++----------+
+
+How many Address Book Entries are listed as phones?
+
++----------+
+| count(*) |
++----------+
+|      600 |
++----------+
+
+
+
+
+
+
